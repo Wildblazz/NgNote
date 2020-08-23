@@ -1,0 +1,83 @@
+<div class="wrapper">
+
+  <div class="header">
+    <div class="date">{{currentDate | date}}</div>
+    <div class="calendar">
+      <button class="btn-small btn-small-o" (click)="setCurrentDate()">Set today</button>
+      <label>
+        <input type="date" (change)="setDate($event)">
+        <button class="btn-small btn-small-o" id="calendar_text">Select Date</button>
+      </label>
+    </div>
+
+    <div class="button-block" id="button-block">
+      <button class="btn" [ngClass]="{btn_active: state == 'active'}" (click)="getFilteredNotes('active')">Active</button>
+      <button class="btn" [ngClass]="{btn_active: state == 'completed'}" (click)="getFilteredNotes('completed')">Completed</button>
+      <button class="btn" [ngClass]="{btn_active: !state}"  (click)="getFilteredNotes()">All</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <form class="form" [formGroup]="addNoteForm" (ngSubmit)="addNote()">
+      <div class="newNote">
+        <H4 class="todo-header">Add new todo</H4>
+        <div class="row">
+          <div class="input-field col s12">
+            <input class="validate" id="title" type="text" autocomplete="off" formControlName="title"/>
+            <label for="title">Enter title</label>
+          </div>
+        </div>
+        <div class="danger-alert"
+             *ngIf="addNoteForm.get('title').errors && addNoteForm.get('title').errors.required && addNoteForm.get('title').touched">
+          This field is required
+        </div>
+        <div class="danger-alert"
+             *ngIf="addNoteForm.get('title').errors && addNoteForm.get('title').errors.minlength && addNoteForm.get('title').touched">
+          Min length is {{addNoteForm.get('title').errors.minlength.requiredLength}}, actual length
+          is  {{addNoteForm.get('title').errors.minlength.actualLength}}
+        </div>
+        <div class="danger-alert"
+             *ngIf="addNoteForm.get('title').errors && addNoteForm.get('title').errors.maxlength && addNoteForm.get('title').dirty">
+          Max length is {{addNoteForm.get('title').errors.maxlength.requiredLength}}, actual length
+          is  {{addNoteForm.get('title').errors.maxlength.actualLength}}
+        </div>
+
+        <div class="row">
+          <div class="input-field col s12">
+            <label for="noteText">Enter note</label>
+            <input type="text" id="noteText" autocomplete="off" formControlName="text"/>
+          </div>
+        </div>
+        <div class="danger-alert"
+             *ngIf="addNoteForm.get('text').errors && addNoteForm.get('text').errors.required && addNoteForm.get('text').touched">
+          This field is required
+        </div>
+        <div class="danger-alert"
+             *ngIf="addNoteForm.get('text').errors && addNoteForm.get('text').errors.minlength && addNoteForm.get('text').touched">
+          Min length is {{addNoteForm.get('text').errors.minlength.requiredLength}}, actual length
+          is  {{addNoteForm.get('text').errors.minlength.actualLength}}
+        </div>
+      </div>
+      <button class="waves-effect waves-light btn-small" type="submit" [disabled]="addNoteForm.invalid">Submit</button>
+    </form>
+
+
+    <div class="noteList" *ngFor="let note of getFilteredNotes(state)">
+      <div class="noteWrapper" [ngClass]="{'note-completed': note.state == 'completed'}">
+        <div class="noteElement" [routerLink]="['/show', note.id]">
+          <div>{{note.title}}</div>
+      </div>
+        <em *ngIf="(note.state !== 'active')" class="small material-icons ico-check ico-bar"(click)="completeNote(note)">check</em>
+        <em *ngIf="(note.state === 'active')" class="small material-icons ico-check ico-bar" (click)="completeNote(note)">crop_din</em>
+        <em class="small material-icons ico-edit ico-bar" [routerLink]="['/edit', note.id]">edit</em>
+        <em class="small material-icons ico-clear ico-bar" (click)="removeNote(note)">clear</em>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="itemsLeft">
+      Uncompleted items left: {{getActiveNotes().length}}
+    </div>
+  </div>
+</div>

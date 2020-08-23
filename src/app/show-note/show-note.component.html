@@ -1,0 +1,16 @@
+<div class="wrapper" *ngIf="note">
+  <div class="note">
+    <p>Title: {{note.title}}</p>
+    <p>Text: {{note.text}}</p>
+  </div>
+  <div class="button-block">
+    <button class="waves-effect waves-light btn-small" type="button" [routerLink]="['/edit', note.id]">Edit</button>
+    <button class="waves-effect waves-effect btn-small" type="button" (click)="deleteNote()">Remove</button>
+    <button class="waves-effect waves-light btn-small" type="button" [routerLink]="['/']">Go home</button>
+  </div>
+</div>
+
+<div class="error" *ngIf="!note">
+  <H1>Can't find note</H1>
+  <button class="waves-effect waves-light btn-small" type="button" [routerLink]="['/']">Go home</button>
+</div>

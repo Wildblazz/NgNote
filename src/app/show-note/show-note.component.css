@@ -1,0 +1,18 @@
+.note{
+  font-size: 20px;
+  font-weight: 400;
+  border: 1px solid;
+  margin: 10px;
+  padding:0 10px;
+  word-wrap: break-word;
+}
+
+.button-block {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.button-block button:hover {
+  cursor: pointer;
+}

@@ -1,0 +1,49 @@
+<form class="f" *ngIf="note" [formGroup]="editNoteForm" (ngSubmit)="saveNote()">
+  <div class="newNote">
+    <H3 class="todo-header">Edit note</H3>
+    <div class="row">
+      <div class="input-field col s12">
+        <input class="validate" id="title" type="text" autocomplete="off" formControlName="title"/>
+        <label class="active" for="title">Enter title</label>
+      </div>
+    </div>
+    <div class="danger-alert"
+         *ngIf="editNoteForm.get('title').errors && editNoteForm.get('title').errors.required && editNoteForm.get('title').touched">
+      This field is required
+    </div>
+    <div class="danger-alert"
+         *ngIf="editNoteForm.get('title').errors && editNoteForm.get('title').errors.minlength && editNoteForm.get('title').touched">
+      Min length is {{editNoteForm.get('title').errors.minlength.requiredLength}}, actual length
+      is  {{editNoteForm.get('title').errors.minlength.actualLength}}
+    </div>
+    <div class="danger-alert"
+         *ngIf="editNoteForm.get('title').errors && editNoteForm.get('title').errors.maxlength && editNoteForm.get('title').dirty">
+      Max length is {{editNoteForm.get('title').errors.maxlength.requiredLength}}, actual length
+      is  {{editNoteForm.get('title').errors.maxlength.actualLength}}
+    </div>
+
+    <div class="row">
+      <div class="input-field col s12">
+        <label class="active" for="noteText">Enter note</label>
+        <input type="text" id="noteText" autocomplete="off" formControlName="text"/>
+      </div>
+    </div>
+    <div class="danger-alert"
+         *ngIf="editNoteForm.get('text').errors && editNoteForm.get('text').errors.required && editNoteForm.get('text').touched">
+      This field is required
+    </div>
+    <div class="danger-alert"
+         *ngIf="editNoteForm.get('text').errors && editNoteForm.get('text').errors.minlength && editNoteForm.get('text').touched">
+      Min length is {{editNoteForm.get('text').errors.minlength.requiredLength}}, actual length
+      is  {{editNoteForm.get('text').errors.minlength.actualLength}}
+    </div>
+  </div>
+  <button class="waves-effect waves-light btn-small" type="submit" [disabled]="editNoteForm.invalid">Submit</button>
+  <button class="waves-effect waves-light btn-small" type="button" (click)="resetForm()">Reset</button>
+  <button class="waves-effect waves-light btn-small" type="button" [routerLink]="['/']">Go back</button>
+</form>
+
+<div class="error" *ngIf="!note">
+  <H1>Can't find note</H1>
+  <button class="waves-effect waves-light btn-small" type="button" [routerLink]="['/']">Go home</button>
+</div>
